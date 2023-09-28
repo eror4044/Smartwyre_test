@@ -12,14 +12,14 @@ public class IncentiveCalculators : IIncentiveCalculators
     public decimal CalculateFixedRateRebate(Rebate rebate, Product product, CalculateRebateRequest request)
     {
         return product.SupportedIncentives.HasFlag(SupportedIncentiveType.FixedRateRebate)
-            && (rebate.Percentage == 0 || product.Price == 0 || request.Volume == 0)
+            && !(rebate.Percentage == 0 || product.Price == 0 || request.Volume == 0)
             ? rebate.Amount += product.Price * rebate.Percentage * request.Volume : 0m;
     }
 
     public decimal CalculateAmountPerUom(Rebate rebate, Product product, CalculateRebateRequest request)
     {
         return product.SupportedIncentives.HasFlag(SupportedIncentiveType.AmountPerUom)
-            && (rebate.Amount == 0 || request.Volume == 0)
+            && !(rebate.Amount == 0 || request.Volume == 0)
             ? rebate.Amount += rebate.Amount * request.Volume : 0m;
     }
 }

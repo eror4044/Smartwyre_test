@@ -41,25 +41,6 @@ public class PaymentServiceTests
             var productDataStoreMock = new Mock<IProductDataStore>();
             var incentiveCalculatorsMock = new IncentiveCalculators();
 
-            rebateDataStoreMock.Setup(r => r.GetRebate(It.IsAny<string>()))
-                .Returns((string rebateIdentifier) =>
-                {
-                    return new Rebate()
-                    {
-                        Incentive = IncentiveType.FixedCashAmount,
-                        Amount = 10m
-                    };
-                });
-
-            productDataStoreMock.Setup(p => p.GetProduct(It.IsAny<string>()))
-                .Returns((string productIdentifier) =>
-                {
-                    return new Product
-                    {
-                        SupportedIncentives = SupportedIncentiveType.FixedCashAmount
-                    };
-                });
-
             var request = new CalculateRebateRequest
             {
                 RebateIdentifier = "1",
@@ -96,26 +77,6 @@ public class PaymentServiceTests
             var productDataStoreMock = new Mock<IProductDataStore>();
             var incentiveCalculatorsMock = new IncentiveCalculators();
 
-            rebateDataStoreMock.Setup(r => r.GetRebate(It.IsAny<string>()))
-                .Returns((string rebateIdentifier) =>
-                {
-                    return new Rebate()
-                    {
-                        Incentive = IncentiveType.FixedRateRebate,
-                        Amount = 10m,
-                        Percentage = 0.05m // Set appropriate percentage value
-                    };
-                });
-
-            productDataStoreMock.Setup(p => p.GetProduct(It.IsAny<string>()))
-                .Returns((string productIdentifier) =>
-                {
-                    return new Product
-                    {
-                        SupportedIncentives = SupportedIncentiveType.FixedRateRebate
-                    };
-                });
-
             var request = new CalculateRebateRequest
             {
                 RebateIdentifier = "1",
@@ -126,12 +87,13 @@ public class PaymentServiceTests
             {
                 Incentive = IncentiveType.FixedRateRebate,
                 Amount = 10m,
-                Percentage = 0.05m // Set appropriate percentage value
+                Percentage = 0.05m
             };
 
             var product = new Product
             {
-                SupportedIncentives = SupportedIncentiveType.FixedRateRebate
+                SupportedIncentives = SupportedIncentiveType.FixedRateRebate,
+                Price = 5
             };
             var result = new CalculateRebateResult();
             rebateDataStoreMock.Setup(r => r.GetRebate(request.RebateIdentifier)).Returns(rebate);
@@ -153,24 +115,6 @@ public class PaymentServiceTests
             var productDataStoreMock = new Mock<IProductDataStore>();
             var incentiveCalculatorsMock = new IncentiveCalculators();
 
-            rebateDataStoreMock.Setup(r => r.GetRebate(It.IsAny<string>()))
-                .Returns((string rebateIdentifier) =>
-                {
-                    return new Rebate()
-                    {
-                        Incentive = IncentiveType.AmountPerUom,
-                        Amount = 10m
-                    };
-                });
-
-            productDataStoreMock.Setup(p => p.GetProduct(It.IsAny<string>()))
-                .Returns((string productIdentifier) =>
-                {
-                    return new Product
-                    {
-                        SupportedIncentives = SupportedIncentiveType.AmountPerUom
-                    };
-                });
 
             var request = new CalculateRebateRequest
             {
